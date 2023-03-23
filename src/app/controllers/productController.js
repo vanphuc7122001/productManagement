@@ -7,49 +7,53 @@ const {
 } = require("../../services/productServices");
 
 class productController {
-  showAllProducts(req, res) {
-    const allProducts = showAllProducts();
+  async showAllProducts(req, res) {
+    const allProducts = await showAllProducts();
     if (allProducts) {
-      res.status(200).send(allProducts);
+      res.status(200).json(allProducts);
     } else {
-      res.status(404).send("Not found!!");
+      res.status(404).json({ msg: "Not found!!" });
     }
   }
 
-  showProductDetail(req, res) {
+  async showProductDetail(req, res) {
     const { id } = req.params;
-    const product = showProductDetail(id);
+    const product = await showProductDetail(id);
     if (product) {
-      res.status(200).send("Chi tiết sản phẩm " + product.name);
+      res.status(200).json(product);
     } else {
-      res.status(404).send("Not Found!");
+      res.status(404).json({ mgs: "Not Found!" });
     }
   }
 
-  createProduct(req, res) {
+  async createProduct(req, res) {
     const data = req.body;
-    const newProduct = createProduct(data);
-    res.status(201).send(newProduct);
+    const newProduct = await createProduct(data);
+    res.status(201).json({
+      newProduct,
+    });
   }
 
-  updateProduct(req, res) {
+  async updateProduct(req, res) {
     const { id } = req.params;
     const data = req.body;
-    const updatedProduct = updateProduct(id, data);
+    const updatedProduct = await updateProduct(id, data);
     if (updatedProduct) {
-      res.status(200).send(updatedProduct);
+      res.status(200).json(updatedProduct);
     } else {
-      res.status(404).send("Not Found!");
+      res.status(404).json({ msg: "Not Found!" });
     }
   }
 
-  deleteProduct(req, res) {
+  async deleteProduct(req, res) {
     const { id } = req.params;
-    const deletedProduct = deleteProduct(id);
+    const deletedProduct = await deleteProduct(id);
     if (deletedProduct) {
-      res.status(200).send(deletedProduct);
+      res.status(200).json({
+        msg: "Product deleted successfully",
+      });
     } else {
-      res.status(404).send("Not Found!");
+      res.status(404).json({ msg: "Not Found!" });
     }
   }
 }
